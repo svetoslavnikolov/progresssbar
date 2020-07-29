@@ -1,3 +1,6 @@
+#ifndef __VERSION_H
+#define __VERSION_H
+
 #ifndef FILE_VERSION
 #   define FILE_VERSION @QTW_VER_MAJOR@,@QTW_VER_MINOR@,@QTW_VER_PATCH@
 #endif 
@@ -15,3 +18,4 @@
 #endif
 
 
+#endif
