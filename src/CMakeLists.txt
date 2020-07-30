@@ -26,13 +26,16 @@ endif()
 
 #find_package(Qt5 COMPONENTS Gui Core Widgets REQUIRED)
 
-set(QTDIR E:/Lib/Qt/Qt5.13.0/5.13.0/msvc2017_64)
 set(QTDIR_LIB ${QTDIR}/lib)
 set(QTDIR_DLL ${QTDIR}/bin)
 set(QTDIR_INCLUDE ${QTDIR}/include)
 
+
 set(QTDLLs Qt5Core.dll Qt5Gui.dll Qt5Widgets.dll
-           Qt5Cored.dll Qt5Guid.dll Qt5Widgetsd.dll)
+    #       Qt5Cored.dll Qt5Guid.dll Qt5Widgetsd.dll
+    )
+
+
 
 find_package(Qt5Core PATHS ${QTDIR})
 find_package(Qt5Gui PATHS ${QTDIR})
@@ -61,6 +64,8 @@ endif(WIN32)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${QTDIR_INCLUDE})
+include_directories(${QTDIR_INCLUDE}/qt)
+
 
 add_library(progressbar SHARED
     version.h
@@ -77,14 +82,33 @@ foreach(DLL IN LISTS QTDLLs)
     add_custom_command(TARGET progressbar
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${QTDIR_DLL}/${DLL} $<TARGET_FILE_DIR:progressbar>
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${QTDIR_DLL}/${DLL} ${CMAKE_CURRENT_SOURCE_DIR}/dlls
         )
-endforeach()    
+endforeach()
+
+add_custom_command(TARGET progressbar
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:progressbar> ${CMAKE_CURRENT_SOURCE_DIR}/dlls
+)
+
 
 target_link_directories(progressbar PUBLIC ${QTDIR}/lib)
 target_link_libraries(progressbar Qt5Core Qt5Gui Qt5Widgets)
 
 generate_export_header(progressbar)
-install(TARGETS progressbar DESTINATION .)
+
+
+# -----------------------------------------------------------------------------
+#  Install
+# -----------------------------------------------------------------------------
+install(TARGETS progressbar DESTINATION dlls)
+install(FILES __init__.py progressbar.py DESTINATION .)
+
+foreach(DLL IN LISTS QTDLLs)
+    install(FILES ${QTDIR_DLL}/${DLL}  DESTINATION dlls)
+endforeach()
+
+
 
 
 # -----------------------------------------------------------------------------

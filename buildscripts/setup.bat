@@ -16,7 +16,8 @@ if "%COMPUTERNAME%" == "DESKTOP-RG9UU05" (
 
 if "%COMPUTERNAME%" == "S1301" (
     set INSTALL_PREFIX=E:/Sources/PythonPackages/progressbar
-    set QTDIR=E:/Lib/Qt/Qt5.12.5/5.12.5/msvc2017_64
+    REM set QTDIR=E:/Lib/Qt/Qt5.12.5/5.12.5/msvc2017_64
+    set QTDIR=C:/ProgramData/Anaconda3/pkgs/qt-5.9.7-vc14h73c81de_0/Library
  )
 
 

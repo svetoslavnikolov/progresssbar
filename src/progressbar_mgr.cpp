@@ -2,6 +2,7 @@
 #include "progressbar_mgr.h"
 
 #include <cstdio>
+#include <cassert>
 
 #include <QtWidgets/qpushbutton.h>
 #include <QtWidgets/qapplication.h>

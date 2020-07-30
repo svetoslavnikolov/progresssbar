@@ -27,15 +27,35 @@
 std::unique_ptr<ProgressBarMgr> progress;
 
 
+
+
+void progress_new(const char* caption, const char* line)
+{
+    progress->New(caption, line);
+}
+
+void progress_show()
+{
+    progress->Show();
+}
+
+void progress_close()
+{
+    progress->Close();
+}
+
+
 void progress_caption_set(const char* caption)
  {
     progress->SetCaption(caption);
 }
 
+
 void progress_text_set(int line, const char* caption)
 {
     progress->SetText(line, caption);
 }
+
 
 void progress_value_set(int value)
 {
@@ -51,6 +71,9 @@ int32_t  progress_stop_reset()
 {
     return (int32_t) progress->StopClickedClear();
 }
+
+
+
 
 
 void DLL_CONSTRUCTOR initialize()

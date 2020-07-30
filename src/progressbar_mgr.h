@@ -40,6 +40,31 @@ public:
         this->widget->SetText(line, caption);
     }
 
+    void New(const char* caption, const char* line)
+    {
+        MainLoopStart();
+        this->StopClickedClear();
+        this->SetProgress(0);
+        this->SetCaption(caption);
+        this->SetText(0, line);
+        this->SetText(1, line);
+        this->SetText(2, line);
+        this->Show();
+    }
+
+    void Show()
+    {
+        MainLoopStart();
+        this->widget->StopClickedClear();
+        this->widget->Show();
+    }
+
+    void Close()
+    {
+        MainLoopStart();
+        this->widget->Hide();
+    }
+
     bool StopClicked()
     {
         MainLoopStart();

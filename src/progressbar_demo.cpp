@@ -1,6 +1,7 @@
 #include "progressbar.h"
 #include <cstdlib>
 #include <cstdio>
+#include <conio.h>
 
 #include <chrono>
 #include <thread>
@@ -12,8 +13,7 @@ using namespace std::chrono_literals;
 
 int main(int /*argc*/, char** /*argv*/)
 {
-    progress_caption_set("Long Progress");
-    
+    progress_new("Long progress", nullptr);
     progress_text_set(0, "Shall perform 5 updates per second.");
     progress_text_set(1, "For a total of 5 minutes.");
 
@@ -27,6 +27,23 @@ int main(int /*argc*/, char** /*argv*/)
         std::this_thread::sleep_for(20ms);
     }
     
+    progress_close();
+
+    printf("Press a button \n");
+    int ch = getche();
+
+    progress_show();
+    for (int n = 0; n < 5 * 60 * 5; n++)
+    {
+        if (progress_stop_clicked()) {
+            printf("Stop clicked. Exitting \n");
+            break;
+        }
+        progress_value_set(n % 100);
+        std::this_thread::sleep_for(20ms);
+    }
+
+
     system("pause");
     return 0;
 }

@@ -34,6 +34,12 @@ signals:
     void setProgressRequest(int progress);
     void setTextRequest(int line, QString text);
 
+    void hideRequest();
+    void showRequest();
+
+protected:
+    virtual void closeEvent(QCloseEvent* event);
+
 public:
     ProgressBarWidget() = delete;
     ProgressBarWidget(ProgressBarWidget&) = delete;
@@ -51,5 +57,8 @@ public:
     void SetCaption(const char* caption);
     void SetText(int line, const char* caption);
     void SetProgress(int progress);
+
+    void Show() { emit showRequest(); }
+    void Hide() { emit hideRequest(); stopClicked.store(true); }
 
 };

@@ -13,6 +13,10 @@
 #endif // __cplusplus
 
 
+_EXPORT void progress_new(const char* caption, const char* line);
+_EXPORT void progress_show();
+_EXPORT void progress_close();
+
 _EXPORT void progress_caption_set(const char* caption);
 _EXPORT void progress_text_set(int line, const char* caption);
 _EXPORT void progress_value_set(int value);

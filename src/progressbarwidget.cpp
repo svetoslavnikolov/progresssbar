@@ -1,5 +1,6 @@
 #include "progressbarwidget.h"
 
+#include <QtGui/qevent.h>
 #include <QtWidgets/qlayout.h>
 
 #include <QtCore/qsize.h>
@@ -27,6 +28,8 @@ void ProgressBarWidget::initGui()
     QObject::connect(this, &ProgressBarWidget::setCaptionRequest, this, &ProgressBarWidget::OnSetCaption);
     QObject::connect(this, &ProgressBarWidget::setProgressRequest, this, &ProgressBarWidget::OnSetProgress);
     QObject::connect(this, &ProgressBarWidget::setTextRequest, this, &ProgressBarWidget::OnSetText);
+    QObject::connect(this, &ProgressBarWidget::showRequest, this, &ProgressBarWidget::show);
+    QObject::connect(this, &ProgressBarWidget::hideRequest, this, &ProgressBarWidget::hide);
 
     //QObject::connect(stop, clicked)
     QObject::connect(stop, &QPushButton::clicked, this, &ProgressBarWidget::OnStopClicked);
@@ -76,18 +79,24 @@ void ProgressBarWidget::SetProgress(int progress)
 
 void ProgressBarWidget::OnSetCaption(const QString newCaption)
 {
+    if (this->isHidden()) { this->show(); };
+    
     this->setWindowTitle(newCaption);
 }
 
 
 void ProgressBarWidget::OnSetText(int line, QString text)
 {
+    if (this->isHidden()) { this->show(); };
+    
     int n = line % labels.size();
     labels[n]->setText(text);
-}
+} 
 
 void ProgressBarWidget::OnSetProgress(int progress)
 {
+    if (this->isHidden()) { this->show(); };
+
     progress = progress % bar->maximum();
     bar->setValue(progress);
 }
@@ -97,3 +106,14 @@ void ProgressBarWidget::OnStopClicked()
     stopClicked.store(true);
 }
 
+
+/*
+ *   Overridden events
+ */
+
+void ProgressBarWidget::closeEvent(QCloseEvent* event)
+{
+    // A better closing strategy with blocking
+    //event->ignore();
+    // this->stopClicked = true;
+}
